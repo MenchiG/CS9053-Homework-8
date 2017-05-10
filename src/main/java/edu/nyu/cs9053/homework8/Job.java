@@ -7,22 +7,17 @@ public class Job {
     private final int label;
     private final int startTime;
     private final int finishTime;
-    private final int weight;
 
-    public Job(int label, int startTime, int finishTime, int weight) {
+
+    public Job(int label, int startTime, int finishTime) {
 
         if(finishTime > startTime) {
             this.label = label;
             this.startTime = startTime;
             this.finishTime = finishTime;
-            this.weight = weight;
         } else {
             throw new InvalidParameterException("Job's finish time must later than start time");
         }
-    }
-
-    public Job(int label, int startTime, int finishTime) {
-        this(label, startTime, finishTime, 0);
     }
 
     public int getStartTime() {
@@ -37,7 +32,4 @@ public class Job {
         return label;
     }
 
-    public int getWeight() {
-        return weight;
-    }
 }

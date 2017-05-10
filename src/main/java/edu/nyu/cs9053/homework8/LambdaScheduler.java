@@ -8,21 +8,21 @@ import java.util.List;
 public class LambdaScheduler{
 
 
-    private final List<Job> jobs;
+    public static List<Job> scheduleJobs(List<Job> jobs) {
 
-    public LambdaScheduler(Collection<Job> jobs) {
-        this.jobs = new ArrayList<>(jobs);
-    }
+        if ((jobs == null) || jobs.isEmpty() || jobs.contains(null)) {
+            throw new IllegalArgumentException();
+        }
 
-    public List<Job> scheduleJobs() {
         int currentTime = 0;
+        List<Job> needScheduledJobs = new ArrayList<>(jobs);
         List<Job> scheduledJobs = new ArrayList<>();
 
         //Greedy algorithm choose earliest finish time job every time.
         AscJobFinishTimeComparator comparator = new AscJobFinishTimeComparator();
-        Collections.sort(jobs, comparator);
+        Collections.sort(needScheduledJobs, comparator);
 
-        for (Job job : jobs) {
+        for (Job job : needScheduledJobs) {
             if(job.getStartTime() >= currentTime) {
                 currentTime = job.getFinishTime();
                 scheduledJobs.add(job);

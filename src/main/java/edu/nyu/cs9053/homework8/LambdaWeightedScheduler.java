@@ -7,24 +7,23 @@ import java.util.List;
 
 public class LambdaWeightedScheduler {
 
-    private final List<Job> jobs;
+    public static List<WeightJob> scheduleJobs(List<WeightJob> jobs) {
 
-    public LambdaWeightedScheduler(Collection<Job> jobs) {
-        this.jobs = new ArrayList<>(jobs);
-    }
+        if ((jobs == null) || jobs.isEmpty() || jobs.contains(null)) {
+            throw new IllegalArgumentException();
+        }
 
-    public List<Job> scheduleJobs() {
-
+        List<WeightJob> needScheduleJobs = new ArrayList<>(jobs);
         AscJobFinishTimeComparator comparator = new AscJobFinishTimeComparator();
-        Collections.sort(jobs, comparator);
+        Collections.sort(needScheduleJobs, comparator);
 
         //Insert an item to make more convenient to record prevJob.
-        jobs.add(0,new Job(0, -1, 0, 0));
+        needScheduleJobs.add(0,new WeightJob(0, -1, 0, 0));
         //Keep the maximum number j for job i which i and j are contained.
-        int[] prevJob = new int[jobs.size()];
-        for (int i = 1; i < jobs.size(); i++) {
+        int[] prevJob = new int[needScheduleJobs.size()];
+        for (int i = 1; i < needScheduleJobs.size(); i++) {
             for(int j = i - 1; j >= 1; j--) {
-                if(jobs.get(i).getStartTime() >= jobs.get(j).getFinishTime()) {
+                if(needScheduleJobs.get(i).getStartTime() >= needScheduleJobs.get(j).getFinishTime()) {
                     prevJob[i] = j;
                     break;
                 }
@@ -34,23 +33,23 @@ public class LambdaWeightedScheduler {
 
         //dynamic programming
         //result(i) = max(vi + result(p(i)), result(i-1)
-        int[] result = new int[jobs.size()];
+        int[] result = new int[needScheduleJobs.size()];
         result[0] = 0;
 
         //to record these jobs which are selected
-        List<List<Job>> scheduledJobs = new ArrayList<>();
+        List<List<WeightJob>> scheduledJobs = new ArrayList<>();
         scheduledJobs.add(new ArrayList<>());
 
         for (int i = 1; i < jobs.size(); i++) {
 
-            result[i] = Math.max((jobs.get(i).getWeight() + result[prevJob[i]]),
+            result[i] = Math.max((needScheduleJobs.get(i).getWeight() + result[prevJob[i]]),
                     result[i-1]);
 
             //record jobs
-            List<Job> scheduledJobsStep;
-            if((jobs.get(i).getWeight() + result[prevJob[i]]) > result[i-1]) {
+            List<WeightJob> scheduledJobsStep;
+            if((needScheduleJobs.get(i).getWeight() + result[prevJob[i]]) > result[i-1]) {
                 scheduledJobsStep = new ArrayList<>(scheduledJobs.get(prevJob[i]));
-                scheduledJobsStep.add(jobs.get(i));
+                scheduledJobsStep.add(needScheduleJobs.get(i));
             } else {
                 scheduledJobsStep = new ArrayList<>(scheduledJobs.get(i-1));
             }
