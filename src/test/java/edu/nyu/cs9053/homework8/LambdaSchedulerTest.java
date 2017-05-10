@@ -1,6 +1,6 @@
 package edu.nyu.cs9053.homework8;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
