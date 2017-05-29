@@ -1,12 +1,12 @@
 package edu.nyu.cs9053.homework8;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by guomengqi on 4/3/17.
+ * Created by guomengqi on 5/29/17.
  */
 class LambdaSchedulerTest {
     @Test
