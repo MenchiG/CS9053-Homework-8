@@ -1,9 +1,6 @@
 package edu.nyu.cs9053.homework8;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class LambdaScheduler{
 
@@ -19,8 +16,7 @@ public class LambdaScheduler{
         List<Job> scheduledJobs = new ArrayList<>();
 
         //Greedy algorithm choose earliest finish time job every time.
-        AscJobFinishTimeComparator comparator = new AscJobFinishTimeComparator();
-        Collections.sort(needScheduledJobs, comparator);
+        Collections.sort(needScheduledJobs, Comparator.comparingInt(Job::getFinishTime));
 
         for (Job job : needScheduledJobs) {
             if(job.getStartTime() >= currentTime) {

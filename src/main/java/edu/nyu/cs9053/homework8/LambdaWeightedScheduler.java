@@ -1,9 +1,6 @@
 package edu.nyu.cs9053.homework8;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class LambdaWeightedScheduler {
 
@@ -14,8 +11,7 @@ public class LambdaWeightedScheduler {
         }
 
         List<WeightJob> needScheduleJobs = new ArrayList<>(jobs);
-        AscJobFinishTimeComparator comparator = new AscJobFinishTimeComparator();
-        Collections.sort(needScheduleJobs, comparator);
+        needScheduleJobs.sort(Comparator.comparingInt(Job::getFinishTime));
 
         //Insert an item to make more convenient to record prevJob.
         needScheduleJobs.add(0,new WeightJob(0, -1, 0, 0));
