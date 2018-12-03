@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * Created by guomengqi on 5/29/17.
  */
@@ -12,25 +14,27 @@ class LambdaSchedulerTest {
     @Test
     void scheduleJobs() {
         List<Job> list = new ArrayList<>();
+
+        /*
+        |Time|0 |1 |2 |3 |4|5|
+        |Job |13|13|34|23|3|
+
+        ans:
+        |Time|0|1|2|3|4|5|
+        |Job |1|1|4|2|
+         */
+
         list.add(new Job(1,0,2));
         list.add(new Job(2,3,4));
-        list.add(new Job(2,0,5));
-        list.add(new Job(2,2,3));
-        System.out.println(LambdaScheduler.scheduleJobs(list).size());
+        list.add(new Job(3,0,5));
+        list.add(new Job(4,2,3));
 
-    }
+        list = LambdaScheduler.scheduleJobs(list);
 
-    @Test
-    void weightedScheduler() {
-        List<WeightJob> list = new ArrayList<>();
-        list.add(new WeightJob(1,0,2, 2));
-        list.add(new WeightJob(2,0,2, 4));
-        list.add(new WeightJob(3,3,5, 4));
-        list.add(new WeightJob(4,1,6, 9));
-        for (WeightJob j: LambdaWeightedScheduler.scheduleJobs(list)) {
-            System.out.println(j.getLabel()+":"+j.getWeight());
-        }
-
+        assertEquals(3,list.size());
+        assertEquals(1,list.get(0).getLabel());
+        assertEquals(4,list.get(1).getLabel());
+        assertEquals(2,list.get(2).getLabel());
 
     }
 
